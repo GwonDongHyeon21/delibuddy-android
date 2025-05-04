@@ -1,0 +1,72 @@
+package com.example.delibuddy.presentation.chatlist
+
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.example.delibuddy.presentation.component.CustomText3
+import com.example.delibuddy.presentation.component.CustomText7
+import com.example.delibuddy.presentation.component.IllustrationGrid
+import com.example.delibuddy.presentation.participationlist.model.ParticipationRoom
+import com.example.delibuddy.ui.theme.Gray3
+import com.example.delibuddy.ui.theme.MainColor
+import com.example.delibuddy.ui.theme.MainWhite
+
+@Composable
+fun ChatItem(
+    deal: ParticipationRoom,
+    isMyRoom: Boolean,
+    onClick: () -> Unit,
+    onClickRoomFinish: (String) -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                1.dp,
+                if (deal.roomStatus == 0 || deal.roomStatus == 1) MainColor else MainWhite,
+                RoundedCornerShape(15.dp)
+            )
+            .clickable(
+                onClick = { onClick() },
+                interactionSource = null,
+                indication = null
+            ),
+        color = Color.White,
+        shape = RoundedCornerShape(15.dp),
+    ) {
+        Column(modifier = Modifier.padding(10.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IllustrationGrid(deal.illustrations)
+
+                Spacer(modifier = Modifier.width(10.dp))
+                Column {
+                    if (deal.roomStatus == 2) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            CustomText3(deal.restaurantName, 0.6f)
+                            Spacer(Modifier.width(4.dp))
+                            CustomText7("완료", Gray3)
+                        }
+                    } else {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            CustomText3(deal.restaurantName)
+                            Spacer(Modifier.width(4.dp))
+                            CustomText7("진행 중", MainColor)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
